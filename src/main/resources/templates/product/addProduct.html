@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление товаров</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/index.css}" type="text/css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><h1><b>ComputerWorld</b></h1></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link disabled">Вы вошли в роли администратора</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" th:action="@{/logout}">
+                            <button type="submit" class="btn btn-primary">Выйти</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<nav style="--bs-breadcrumb-divider: '>'; margin-top: 30px; margin-bottom: 40px;" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Личный кабинет администратора</a></li>
+        <li class="breadcrumb-item"><a href="/admin/admin/products">Список товаров</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Добавление товаров</li>
+    </ol>
+</nav>
+
+<form th:method="POST" th:action="@{/admin/product/add}" th:object="${product}" enctype="multipart/form-data" style="margin-left: 15%; margin-right: 15%; margin-bottom: 5%;">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1" style="width: 15%;">Наименование</span>
+        <input type="text" th:field="*{title}" class="form-control" placeholder="Введите наименование товара..." aria-describedby="basic-addon1">
+        <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" style="width: 15%;">Описание</span>
+        <textarea th:field="*{description}" placeholder="Введите описание товара..." class="form-control"></textarea>
+        <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" style="width: 15%;">Цена</span>
+        <input type="number" th:field="*{price}" class="form-control" placeholder="Введите цену товара..." min="1" step="0.00">
+        <span class="input-group-text">₽</span>
+        <div style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" style="width: 15%;">Склад</span>
+        <input type="text" th:field="*{warehouse}" placeholder="Введите склад..." class="form-control">
+        <div style="color: red" th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" style="width: 15%;">Продавец</span>
+        <textarea th:field="*{seller}" placeholder="Введите данные о продавце..." class="form-control"></textarea>
+        <div style="color: red" th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="category" style="width: 15%;">Категория</label>
+        <select name="category" class="form-select" id="category" th:field="*{category}">
+            <div th:each="element : ${category}">
+                <option th:text="${element.getName()}" th:value="${element.getId()}"></option>
+            </div>
+        </select>
+    </div>
+    <div class="alert alert-danger" role="alert">
+        Вы можете добавить до 5 изображений. Важно: первое изображение является главным и обязательно к загрузке!
+    </div>
+
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="file_one" style="width: 6%;">1</label>
+        <input type="file" class="form-control" id="file_one" name="file_one">
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="file_two" style="width: 6%;">2</label>
+        <input type="file" class="form-control" id="file_two" name="file_two">
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="file_three"style="width: 6%;">3</label>
+        <input type="file" class="form-control" id="file_three" name="file_three">
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="file_four" style="width: 6%;">4</label>
+        <input type="file" class="form-control" id="file_four" name="file_four">
+    </div>
+    <div class="input-group mb-3">
+        <label class="input-group-text" for="file_five" style="width: 6%;">5</label>
+        <input type="file" class="form-control" id="file_five" name="file_five">
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-left: 40%">Добавить товар</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>
